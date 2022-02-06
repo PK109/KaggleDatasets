@@ -1,8 +1,5 @@
 import os
-import json
-import logging
-import pdb
-from io import StringIO
+from kaggle_credential import setup_kaggle_credentials
 
 #kaggle searching setup - update used fields by inserting values
 #(defaults noted in comment)
@@ -22,6 +19,8 @@ from io import StringIO
   -v, --csv  
   """
 
+setup_kaggle_credentials()
+
 help = None # True
 sort_by = 'votes'
 size = None # 'all'
@@ -34,20 +33,6 @@ user = None # 'username'
 page = None # '20'
 csv  =  None #True
 
-#logger setup
-logging.basicConfig(level=logging.DEBUG )
-logger = logging.getLogger('logger')
-logger.setLevel(logging.DEBUG)
-
-#variable setup for Kaggle API
-os.environ['KAGGLE_CONFIG_DIR']= os.path.abspath(os.pardir)
-logger.info(f"API token should be located in the folder: {os.environ['KAGGLE_CONFIG_DIR']}")
-
-kaggle_cred = {}
-with open(os.path.join(os.getenv('KAGGLE_CONFIG_DIR'),'kaggle.json')) as file:
-    json_file = file.readline()
-    kaggle_cred.update(json.loads(json_file))
-    logger.info(f'Successfully imported API credentials for user: \'{kaggle_cred["username"]}\'')
 
 command = 'kaggle datasets list'
 if help: command += ' -h'
@@ -56,13 +41,11 @@ if size: command += f' --size {size}'
 if file_type : command += f' --file-type {file_type}'
 if specific_license: command += f' --license {specific_license}'
 if tags: command += f' --tags {tags}'
-if search: command += f' -s {search}'
+if search: command += f" -s {search.replace(' ','-')}"
 if mine: command += f' -m'
 if user: command += f' --user {user}'
 if page: command += f' -p {page}'
 if csv: command += f' -v'
-
-logger.debug(command)
 
 #check terminal for results
 os.system(command)
