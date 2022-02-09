@@ -5,7 +5,6 @@ import logging
 from kaggle_credential import setup_kaggle_credentials
 
 default_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'datasets')
-setup_kaggle_credentials()
 
 #sample data to be downloaded
 predefined_values = dict(
@@ -27,14 +26,15 @@ except:
     path = predefined_values['PATH']
 
 try:
-    unzip = sys.argv[3] == 'true'
+    unzip = sys.argv[3].lower() == 'true'
 except:
-    unzip = predefined_values['PATH']
+    unzip = predefined_values['UNZIP']
 
 command += f" {dataset}"
 command += f" -p \"{path}\""
 if unzip:
     command += " --unzip"
 
-print(command)
+
+setup_kaggle_credentials()
 os.system(command)
