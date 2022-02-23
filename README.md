@@ -4,9 +4,10 @@ This project is dedicated to educational purposes.
 It contains files that are used for different machine learning algorithms,
 especially datasets and scripts that operates on them.
  
-__In order to manipulate on Kaggle datasets from this application,__ 
-[provide Kaggle API token](https://www.kaggle.com/docs/api#authentication) 
-and place`kaggle.json` in root folder.
+__In order to manipulate on Kaggle datasets from this application:__ 
+1. [provide Kaggle API token](https://www.kaggle.com/docs/api#authentication) 
+and place`kaggle.json` in root folder
+2. Run in terminal `pip install -r requirements.txt`
 
 ## How to search for datasets/competitions
 1. Provide searching parameters inside `.\helpers\kaggle_explorer.py` script
