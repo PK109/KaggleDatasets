@@ -1,17 +1,17 @@
 import os
-import sys
+
 from kaggle_credential import setup_kaggle_credentials
 
-#kaggle searching setup - update used fields by inserting values
-#(defaults noted in comment)
+# kaggle searching setup - update used fields by inserting values
+# (defaults noted in comment)
 
 # Common parameters
-data_type = "competitions" # available also "datasets"
-help = None # True
-sort_by = None # 'latestDeadline' / 'hottest'
-search = 'house-prices-advanced-regression-techniques'
-page = None # '20'
-csv  =  None #True
+data_type = "datasets"  # available also "competitions"
+help = None  # True
+sort_by = None  # 'latestDeadline' / 'hottest'
+search = 'Pumpkin'
+page = None  # '20'
+csv = None  # True
 
 """ COMPETITION EXPLORER
 
@@ -24,10 +24,9 @@ csv  =  None #True
                         Term(s) to search for
   -v, --csv             Print results in CSV format
                         (if not set print in table format)
-""" # COMPETITION EXPLORER
-if data_type == "competitions":
-    group = None # 'general'
-    category = None # 'all'
+"""  # COMPETITION EXPLORER
+group = None  # 'general'
+category = None  # 'all'
 
 """DATASET EXPLORER
 
@@ -44,38 +43,39 @@ if data_type == "competitions":
   --user USER           Find public datasets owned by a specific user or organization
   -p PAGE, --page PAGE  Page number for results paging. Page size is 20 by default
   -v, --csv  
-  """ # DATASET EXPLORER
-if data_type == "datasets":
-    size = None # 'all'
-    file_type = None # 'all'
-    specific_license = None # 'all'
-    tags = None # ''
-    mine = None # True
-    user = None # 'username'
-
+  """  # DATASET EXPLORER
+size = None  # 'all'
+file_type = None  # 'all'
+specific_license = None  # 'all'
+tags = None  # ''
+mine = None  # True
+user = None  # 'username'
 
 command = f'kaggle {data_type} list'
-if help: command += ' -h'
-if sort_by: command += f' --sort-by {sort_by}'
-if search: command += f" -s {search.replace(' ','-')}"
-if page: command += f' -p {page}'
-if csv: command += f' -v'
+if help is not None:
+    command += ' -h'
+if sort_by is not None:
+    command += f' --sort-by {sort_by}'
+if search is not None:
+    command += f" -s {search.replace(' ', '-')}"
+if page is not None:
+    command += f' -p {page}'
+if csv is not None:
+    command += f' -v'
 
 # optional parameters
-if 'size' in locals():
+if size is not None:
     command += f' --size {size}'
-if 'file_type' in locals():
+if file_type is not None:
     command += f' --file-type {file_type}'
-if 'specific_license' in locals():
+if specific_license is not None:
     command += f' --license {specific_license}'
-if 'tags' in locals():
+if tags is not None:
     command += f' --tags {tags}'
-if 'mine' in locals():
+if mine is not None:
     command += f' -m'
-if 'user' in locals():
+if user is not None:
     command += f' --user {user}'
-
-
 
 setup_kaggle_credentials()
 # check terminal for results

@@ -19,7 +19,7 @@ and place`kaggle.json` in root folder
 2. As default, `.\helpers\dataset_downloader.py` script downloads sample dataset to `.\datasets` folder unzipped
 3. Parameter modification is possible in two ways:
    1. Changing parameters inside script
-   2. Invoking script with syntax: `python .\helpers\kaggle_downloader.py` `dataset_name` `download_location` `unzip?`
+   2. Invoking script with syntax: `python .\helpers\dataset_downloader.py` `dataset_name` `download_location` `unzip?`
    All parameters are optional. When missing, default values are obtained from script
 
 ## How to download competition
