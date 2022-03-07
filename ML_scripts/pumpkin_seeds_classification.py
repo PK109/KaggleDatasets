@@ -1,15 +1,13 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import logging
 import os
 import shutil
+import logging
 
-from zipfile import ZipFile
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-
 from sklearn.metrics import classification_report, confusion_matrix
 
 # logger setup
@@ -33,8 +31,6 @@ path_out = os.path.join(base_path, 'datasets', 'pumpkin')
 if not os.path.exists(path_out):
     os.system(f'python \"{path_download}\" mkoklu42/pumpkin-seeds-dataset \"{path_out}\"')
 
-
-
 if os.path.exists(os.path.join(path_out, 'output')):
     shutil.rmtree(os.path.join(path_out, 'output'))
 
@@ -43,7 +39,6 @@ logger.info(f"Imported files: {all_files}")
 
 # data import
 df = pd.read_excel(io= os.path.join(path_out, all_files[-1]), sheet_name=0)
-# X.drop(['Class'], inplace= True, axis= 1)
 
 # logger.info(df.head())
 # logger.info(df.describe())
@@ -66,7 +61,7 @@ df.drop(columns= ['Perimeter', 'Major_Axis_Length', 'Convex_Area', 'Equiv_Diamet
 # simplified pairplot
 sns.pairplot(df.drop(columns=['Class_labels']) , hue= 'Class')
 plt.figure()
-# plt.show()
+plt.title("Reduced Pair Plot")
 
 # model calculation
 X = df.drop(columns= ['Class', 'Class_labels'])
@@ -75,6 +70,8 @@ y = df['Class_labels']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.33)
 
 rf_clf = RandomForestClassifier( n_jobs=-1)# max_depth=3, min_samples_leaf=5,
+# Results for Logistic regression are much worse than Random Forest
+# rf_clf = LogisticRegression(solver='liblinear', n_jobs= -1 )
 
 rf_clf.fit(X_train,y_train)
 
@@ -90,11 +87,14 @@ logger.info(f"Classes tagged as: {rf_clf.classes_}")
 # this plot shows the deviation between real and predicted values
 # if value on y axis is bigger than 0.5, it means wrong prediction
 sns.scatterplot(x= y_test.index, y=y_deviation)
+plt.title("Deviation representation")
 
 # This figure presents feature importances
 # higher value means bigger impact on final calculation
 plt.figure()
 sns.barplot(y=rf_clf.feature_importances_,x = X.columns)
+plt.title("Feature importances")
+
 # It is visible that 'Roundness' column has the biggest importance as long as it shows the biggest separation
 # among all features - can be noticed on the pairplot.
 
